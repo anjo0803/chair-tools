@@ -1,0 +1,94 @@
+@font-face {
+    font-family: 'Semplicita';
+    src: url('Semplicita-Medium.otf');
+}
+
+:root {
+    color: white;
+    font-size: 16px;
+    font-family: var(--font-primary);
+
+    --tsp-blue: #109AED;
+    --nemo-blue: #0080C4;
+    --tropical-orange: #FF9900;
+
+    --font-primary: 'Semplicita', sans-serif;
+}
+
+body {
+    margin: 0px;
+    background-color: #88d5ff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+* {
+    box-sizing: border-box;
+}
+::selection {
+    color: white;
+    background-color: var(--tropical-orange);
+}
+
+.site-header {
+    background-color: var(--tropical-orange);
+}
+
+.site-title {
+    background-color: var(--nemo-blue);
+    margin: 0px;
+    padding: 10px;
+}
+
+.site-title::before {
+    content: '';
+    vertical-align: text-top;
+    background-image: url('../res/logo_assembly.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+.site-subtitle {
+    background-color: var(--tsp-blue);
+    margin: 0px;
+    text-align: center;
+}
+
+
+/*
+ * PAGE MAIN CONTENT
+ */
+main {
+    margin: 10px;
+}
+
+#input-form fieldset {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.input-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.inline-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.input-row input[type=number] {
+    width: 100%;
+}
+
+#input-form input,
+#input-form select {
+    border: none;
+    background-color: var(--nemo-blue);
+    color: white;
+    padding: 5px;
+}

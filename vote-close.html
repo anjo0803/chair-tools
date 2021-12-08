@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Result | Chairing Tools</title>
+    <script defer src="js/utils.js"></script>
+    <script src="js/genarch.js"></script>
+    <script defer src="js/vote-close.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Semplicita';
+            src: url('css/Semplicita-Medium.otf');
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-family:Semplicita;">Voting Result</h1>
+    <details open>
+        <summary>Vote Basics</summary>
+        <label for="bcode">Bill Code (e.g. A2109.01):</label>
+        <input type="text" id="bcode" value="A1234.05"><br>
+        <label for="btitle">Bill Title:</label>
+        <input type="text" id="btitle" value="Testing Stuff"><br>
+        <label for="threshold">Threshold for passage (in percent):</label>
+        <input type="number" id="threshold" value="60"><br>
+        <label for="roster">Legislator Roster:</label>
+        <textarea id="roster" cols="30" rows="10"></textarea>
+    </details>
+    <br>
+    <details open>
+        <summary>Vote Outcome</summary>
+        <label for="vfor">List of Votes For:</label>
+        <input type="text" id="vaye" value="Altrurismo, Apatosaurus, Arvan Irawer, Belschaft, Briny(Siyania), Cabinet Office, Concrete Slab, Darren Daniels, Domais, Drugged Monkeys, Eflad, Encaitar, Eshialand, Floptop, Griffindor, HumanSanity, ILIASFG, im_a_waffle1, LDS, Minskiev, New Goldman, Nicholas and Great Britain, Not Austria, Phanama, Poppy, Purple Hyacinth, Quebecshire, Qwert, sandaoguo, Seraph, The Cordian Isles, The Haughtherlands, Tishers [Nyxonia], Tsunamy, Volaworand, Vrandaria, Witchcraft and Sorcery"><br>
+        <label for="vagainst">List of Votes Against:</label>
+        <input type="text" id="vnay" value="Beepee, Bobberino, Farengeto, LFP, Mtlaing, QuietDad, Techganet"><br>
+        <label for="vabstain">List of Abstentions:</label>
+        <input type="text" id="vabstain" value="Altmoras, Amerion, anjo, Bleakfoot, Hakketomat, Imperial Frost Federation, Jay Coop, Konsa, Kris Kringle, Murelia, Penguin, Pronoun, Rebeltopia, Roavin, Sul Rotice"><br>
+    </details>
+    <br>
+    <button onclick="generate();">Generate</button>
+    <br>
+    <p id="output">
+        <h2 style="font-family:Semplicita;">Output:</h2>
+        <canvas id="result-img" width="360" height="360"></canvas><br>
+        <textarea id="bbcode-out" cols="100" rows="10"></textarea>
+        <textarea id="paste-votes" cols="10" rows="10"></textarea>
+    </p>
+    
+    <aside id="img-gen" hidden>
+        <img src="res/bg.png" alt="background" id="bg">
+    </aside>
+</body>
+</html>

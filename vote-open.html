@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Vote | Chairing Tools</title>
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/mediaquery.css">
+    <script defer src="js/utils.js"></script>
+    <script defer src="js/nsapi.js"></script>
+    <script defer src="js/vote-open.js"></script>
+</head>
+<body>
+    <div>
+        <label for="roster">List of Legislators:</label>
+        <textarea id="roster" cols="30" rows="10"></textarea>
+    </div>
+    <div>
+        <label for="btitle">Bill Title (for amendments/repeals, title of the law being amended):</label>
+        <input type="text" id="btitle" placeholder="e.g. Sunshine Act">
+    </div>
+    <div>
+        <label for="bpurpose">Bill Purpose:</label>
+        <input type="text" id="bpurpose" placeholder="e.g. set legal deadlines to release confidential discussion to the public for transparency">
+    </div>
+    <div>
+        <label for="btext">Bill Text:</label>
+        <textarea id="btext" cols="30" rows="10"></textarea>
+    </div>
+    <div>
+        <label for="debate">Link to debate thread:</label>
+        <input type="text" id="debate">
+    </div>
+    <div>
+        <label for="btype">Motion Type:</label>
+        <select id="btype" onchange="updateLegislationOptionsVisible();">
+            <optgroup label="Legislation">
+                <option value="law-general" selected>General Law</option>
+                <option value="law-constitutional">Constitutional Law</option>
+                <option value="treaty">Treaty</option>
+            </optgroup>
+            <optgroup label="Resolution">
+                <option value="res-general">On General Matters</option>
+                <option value="res-constitutional">On Constitutional Matters</option>
+            </optgroup>
+            <optgroup label="Appointment">
+                <option value="crs">CRS</option>
+                <option value="court">Justice</option>
+                <option value="legcomm">LegComm</option>
+                <option value="recall">Recall</option>
+            </optgroup>
+        </select>
+    </div>
+    <div id="legislation-options">
+        <label for="is-amendment">Is amendment?</label>
+        <input type="checkbox" id="is-amendment" onchange="updateIsAmendment();">
+        <label for="is-repeal">Is repeal?</label>
+        <input type="checkbox" id="is-repeal" onchange="updateIsRepeal();">
+        <span id="law-thread-container" hidden>
+            <label for="law-thread">Link to the original law:</label>
+            <input type="text" id="law-thread">
+        </span>
+    </div>
+    <div>
+        <label for="is-edited">Edited to comply with formatting guidelines?</label>
+        <input type="checkbox" id="is-edited">
+    </div>
+    <div>
+        <button onclick="generate();">Generate</button>
+        <textarea id="out-forum" cols="30" rows="10"></textarea>
+        <textarea id="out-dispatch" cols="30" rows="10"></textarea>
+        <textarea id="out-discord" cols="30" rows="10"></textarea>
+    </div>
+</body>
+</html>

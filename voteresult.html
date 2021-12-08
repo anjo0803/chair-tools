@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/mediaquery.css">
+    <script src="js/voteresult.js" defer></script>
+    <script src="js/genarch.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <h1 class="site-title">Assembly Autoformatter</h1>
+        <h2 class="site-subtitle">Format Voting Results</h2>
+    </header>
+    <main>
+        <form action="./process?a=voteresult" method="POST" autocomplete="off" id="input-form">
+            <fieldset class="fit-two">
+                <legend>Bill Info</legend>
+                <div class="input-row" id="vid-container">
+                    <label for="vid">Vote ID</label>
+                    <input type="text" name="vid" id="vid">
+                    <span>
+                        <input type="checkbox" name="autoinfo" id="autoinfo">
+                        <label for="autoinfo">Load title & thread from spreadsheet</label>
+                    </span>
+                </div>
+                <div class="separator"></div>
+                <div class="input-row" id="type-container">
+                    <label for="type">Bill Type</label>
+                    <select name="type" id="type" onchange="updateFields();">
+                        <optgroup label="Legislation">
+                            <option value="simple">Normal Law</option>
+                            <option value="const">Constitutional Law</option>
+                            <option value="treaty">Treaty</option>
+                            <option value="res">Resolution</option>
+                        </optgroup>
+                        <optgroup label="Appointment">
+                            <option value="crs">CRS</option>
+                            <option value="court">High Court</option>
+                            <option value="legcomm">Legislator Committee</option>
+                            <option value="other">Other</option>
+                            <option value="other">Recall</option>
+                        </optgroup>
+                    </select>
+                    <span id="amend-container">
+                        <input type="checkbox" name="amend" id="amend">
+                        <label for="amend">Amendment</label>
+                    </span>
+                    <span id="repeal-container">
+                        <input type="checkbox" name="repeal" id="repeal">
+                        <label for="repeal">Repeal</label>
+                    </span>
+                    <span id="other-container">
+                        <div class="inline-input">
+                            <label for="office">Name of Office</label>
+                            <input type="text" name="office" id="office">
+                        </div>
+                        <div class="inline-input">
+                            <label for="person">Name of Nominee</label>
+                            <input type="text" name="person" id="person">
+                        </div>
+                    </span>
+                </div>
+                <div class="input-row" id="title-container">
+                    <label for="title">Bill Title</label>
+                    <input type="text" name="title" id="title">
+                </div>
+                <div class="separator"></div>
+                <div class="input-row" id="thread-container">
+                    <label for="thread">Voting Thread</label>
+                    <input type="text" name="thread" id="thread">
+                </div>
+                <!-- Include: Checkboxes for "Amendment", "Repeal" -->
+                <!-- Competing proposals! -->
+            </fieldset>
+            <fieldset class="fit-four">
+                <legend>Vote Outcome</legend>
+                <div class="input-row">
+                    <label for="aye">Ayes</label>
+                    <input type="number" name="aye" id="aye">
+                </div>
+                <div class="separator"></div>
+                <div class="input-row">
+                    <label for="nay">Nays</label>
+                    <input type="number" name="nay" id="nay">
+                </div>
+                <div class="separator"></div>
+                <div class="input-row">
+                    <label for="abstain">Abstain</label>
+                    <input type="number" name="abstain" id="abstain">
+                </div>
+                <div class="separator"></div>
+                <div class="input-row">
+                    <label for="aye">Ayes</label>
+                    <input type="number" name="aye" id="aye">
+                </div>
+            </fieldset>
+        </form>
+        <canvas id="result-img" width="360" height="360">
+            The canvas function, which is required for the automatic generation
+            of a results image, isn't supported by your browser...
+        </canvas>
+        <button onclick="createVisual('A2109.01', 0.6);">Affe</button>
+        <aside id="img-gen" hidden>
+            <img src="res/bg.png" alt="background" id="bg">
+        </aside>
+    </main>
+    <footer>
+        
+    </footer>
+</body>
+</html>
