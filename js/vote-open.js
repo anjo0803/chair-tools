@@ -17,17 +17,20 @@ function generate() {
  * @param {Date} finish `Date` object for the vote's conclusion, as calculated before
  */
 function createForumContent(finish) {
+    let btype = id('btype').value;
+
     let header = `Legislators of the South Pacific,`;
     let introduction = `There has been a seconded motion to bring ${id('is-amendment').checked ? 'an amendment to the [url=#law-thread][b]#btitle[/b][/url]' : id('is-repeal').checked ? 'the repeal of the [url=#law-thread][b]#btitle[/b][/url]' : 'the [b]#btitle[/b]'} to vote. The debate thread can be found [url=${id('debate').value}]here[/url].`
         .replace(/#law-thread/gm, id('law-thread').value)
         .replace(/#btitle/gm, id('btitle').value);
     let legalstuff = `This is #btype, thus concluding on #vote-end.`
         .replace(/#btype/gm, (id('is-amendment').checked ? 'an amendment to ' : id('is-repeal').checked ? 'a repeal of ' : '') + formatType(id('btype').value))
-        .replace(/#vote-end/gm, `[url=https://www.timeanddate.com/countdown/generic?iso=${finish.getUTCFullYear()}${finish.getUTCMonth() > 8 ? finish.getUTCMonth() + 1 : '0' + (finish.getUTCMonth() + 1)}${finish.getUTCDate() > 9 ? finish.getUTCDate() : '0' + finish.getUTCDate()}T${finish.getUTCHours() > 9 ? finish.getUTCHours() : '0' + finish.getUTCHours()}${finish.getUTCMinutes() > 9 ? finish.getUTCMinutes() : '0' + finish.getUTCMinutes()}&p0=1440&msg=End%20of%20Vote%20-%20${encodeURI(id('is-amendment').checked ? 'Amendment to the ' : id('is-repeal').checked ? 'Repeal of the ' : '')}${encodeURI(id('btitle').value)}&font=slab&csz=1][b]${formatDate(finish)} UTC[/b][/url] (${convertDate(finish, 'Europe/London')} in London, ${convertDate(finish, 'America/New_York')} in New York, ${convertDate(finish, 'Australia/Sydney')} in Sydney)`);
+        .replace(/#vote-end/gm, `[url=https://www.timeanddate.com/countdown/generic?iso=${finish.getUTCFullYear()}${finish.getUTCMonth() > 8 ? finish.getUTCMonth() + 1 : '0' + (finish.getUTCMonth() + 1)}${finish.getUTCDate() > 9 ? finish.getUTCDate() : '0' + finish.getUTCDate()}T${finish.getUTCHours() > 9 ? finish.getUTCHours() : '0' + finish.getUTCHours()}${finish.getUTCMinutes() > 9 ? finish.getUTCMinutes() : '0' + finish.getUTCMinutes()}&p0=1440&msg=End%20of%20Vote%20-%20${encodeURI(id('is-amendment').checked ? 'Amendment to the ' : id('is-repeal').checked ? 'Repeal of the ' : '')}${encodeURI(id('btitle').value)}&font=slab&csz=1][b]${formatDateUTC(finish)} UTC[/b][/url] (${convertDate(finish, 'Europe/London')} in London, ${convertDate(finish, 'America/New_York')} in New York, ${convertDate(finish, 'Australia/Sydney')} in Sydney)`);
     let instructions = `Please vote by poll if possible. If you cannot vote by poll, post 'Aye', 'Nay' or 'Abstain' in this thread. Please do not vote both by poll and by post. Comments and discussions belong in the debate thread and should be posted there.`;
-    let editNotice = `[size=small][b]Notice:[/b] In line with the Law Standards Act (Article 5, Section 2), the bill was edited at the Chair's discretion before bringing it to vote so it complies with formatting guidelines.[/size]`;
-    
-    id('out-forum').value = `${header}\n\n${introduction}\n\n${legalstuff}\n\n${instructions}\n\n[bill]${id('btext').value}[/bill]${id('is-edited').checked ? '\n' + editNotice : ''}`;
+    let billText = btype == 'crs' || btype == 'court' || btype == 'legcomm' || btype == 'recall' ? '' : `[bill]${id('btext').value}[/bill]`;
+    let editNotice = `[size=small][b]Notice:[/b] The bill was edited at the Chair's discretion before bringing it to vote so it complies with formatting guidelines.[/size]`;
+
+    id('out-forum').value = `${header}\n\n${introduction}\n\n${legalstuff}\n\n${instructions}\n\n${billText}${id('is-edited').checked ? '\n' + editNotice : ''}`;
 }
 
 /**
@@ -45,7 +48,7 @@ function createDispatchContent(finish, votingThread) {
         .replace(/#debate/gm, id('debate').value)
         .replace(/#voting/gm, votingThread);
     let timing = `[font=Avenir, Segoe UI][align=justify][size=120]The voting period will be ${finish.getDate() - new Date().getDate()} days, closing on #vote-end.[/size][/align][/font]`
-        .replace(/#vote-end/gm, `[url=https://www.timeanddate.com/countdown/generic?iso=${finish.getUTCFullYear()}${finish.getUTCMonth() > 8 ? finish.getUTCMonth() + 1 : '0' + (finish.getUTCMonth() + 1)}${finish.getUTCDate() > 9 ? finish.getUTCDate() : '0' + finish.getUTCDate()}T${finish.getUTCHours() > 9 ? finish.getUTCHours() : '0' + finish.getUTCHours()}${finish.getUTCMinutes() > 9 ? finish.getUTCMinutes() : '0' + finish.getUTCMinutes()}&p0=1440&msg=End%20of%20Vote%20-%20${encodeURI(id('is-amendment').checked ? 'Amendment to the ' : id('is-repeal').checked ? 'Repeal of the ' : '')}${encodeURI(id('btitle').value)}&font=slab&csz=1][color=#FF9900][b]${formatDate(finish)} UTC[/b][/color][/url]`);
+        .replace(/#vote-end/gm, `[url=https://www.timeanddate.com/countdown/generic?iso=${finish.getUTCFullYear()}${finish.getUTCMonth() > 8 ? finish.getUTCMonth() + 1 : '0' + (finish.getUTCMonth() + 1)}${finish.getUTCDate() > 9 ? finish.getUTCDate() : '0' + finish.getUTCDate()}T${finish.getUTCHours() > 9 ? finish.getUTCHours() : '0' + finish.getUTCHours()}${finish.getUTCMinutes() > 9 ? finish.getUTCMinutes() : '0' + finish.getUTCMinutes()}&p0=1440&msg=End%20of%20Vote%20-%20${encodeURI(id('is-amendment').checked ? 'Amendment to the ' : id('is-repeal').checked ? 'Repeal of the ' : '')}${encodeURI(id('btitle').value)}&font=slab&csz=1][color=#FF9900][b]${formatDateUTC(finish)} UTC[/b][/color][/url]`);
     let footer = `[align=center][background-block=#019AED][font=Avenir, Segoe UI][size=120]\n[img]https://i.imgur.com/W4ZLFzq.png[/img]\n[color=#019AED]·[/color][/size][/font][/background-block][background-block=#0080C4]\n[color=#0080C4]·[/color]\n[url=https://www.nationstates.net/region=the_south_pacific][img]https://i.imgur.com/NYenHvV.png[/img][/url][color=#0080C4]—[/color][url=https://discord.gg/tEyyDyh][img]https://i.imgur.com/JyO4OrT.png[/img][/url][color=#0080C4]—[/color][url=https://tspforums.xyz/][img]https://i.imgur.com/SEpkSix.png[/img][/url]\n[color=#0080C4]·[/color]\n[color=#0080C4]·[/color]\n[/background-block][/align][/box]`;
     
     let roster = id('roster').value.split('\n');
@@ -66,10 +69,10 @@ function createDispatchContent(finish, votingThread) {
  */
 function createDiscordContent(finish, votingThread) {
     let header = `@Legislators,`;
-    let introduction = `#btype#bpurpose has been brought to vote. The voting period will be ${finish.getDate() - new Date().getDate()}, ending on #vote-end.`
+    let introduction = `#btype#bpurpose has been brought to vote. The voting period will be ${finish.getDate() - new Date().getDate()} days, ending on #vote-end.`
         .replace(/#btype/gm, (id('is-amendment').checked ? 'An amendment to the ' : id('is-repeal').checked ? 'The repeal of the ' : 'The ') + id('btitle').value)
         .replace(/#bpurpose/gm, id('is-amendment').checked ? ' to ' + id('bpurpose').value : '')
-        .replace(/#vote-end/gm, `${formatDate(finish)} UTC`);
+        .replace(/#vote-end/gm, `${formatDateUTC(finish)} UTC`);
     let links = `Debate thread: #debate\nVoting thread: #voting`
         .replace(/#debate/gm, id('debate').value)
         .replace(/#voting/gm, votingThread);
@@ -109,14 +112,16 @@ function calculateVoteFinish() {
  * @param {Date} date The date to format
  * @returns {string} The given date, as string of the schema `[day] [month] at [hour]:[minute]`
  */
-function formatDate(date) {
+function formatDateUTC(date) {
     return date.toLocaleString('en-US', {
         day: 'numeric',
-        month: 'long'
+        month: 'long',
+        timeZone: 'Etc/UTC'
     }) + ' at ' + date.toLocaleString('en-US', {
         hour: '2-digit',
         hour12: false,
-        minute: '2-digit'
+        minute: '2-digit',
+        timeZone: 'Etc/UTC'
     });
 }
 
