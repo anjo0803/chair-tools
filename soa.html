@@ -3,112 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>State of the Assembly | Chairing Tools</title>
-    <link rel="stylesheet" href="css/fonts.css">
-    <link rel="stylesheet" href="css/mediaquery.css">
+    <title>State of the Assembly 🪑</title>
+    <link rel="shortcut icon" href="res/logo_assembly.png" type="image/png">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/soa.css">
     <script defer src="js/utils.js"></script>
     <script defer src="js/nsapi.js"></script>
     <script defer src="js/soa.js"></script>
 </head>
 <body>
-    <details open>
-        <summary>Votes</summary>
+    <!-- Standardised page header & footer (re-sorted via CSS) -->
+    <header>
+        <h1>Chair's Toolbox</h1>
+        <h2>State of the Assembly</h2>
+    </header>
+    <footer>
+        <div id="page-state">TSP Chair's Toolbox</div>
         <div>
-            <label for="intro-votes">Introduction text:</label><br>
-            <textarea id="intro-votes" cols="30" rows="10"></textarea>
+            <address title="Tepertopia on NationStates">
+                Created by anjo (<a href="https://www.nationstates.net/tepertopia">Tepertopia</a>)
+            </address>
+            <var id="page-version">unknown</var>
         </div>
-        <div>
-            <label for="add-votes">List of votes</label>
-            <textarea id="add-votes" cols="30" rows="10"></textarea>
-            <button onclick="loadVotes();">Load</button>
-            <i id="error-votes"></i>
-        </div>
-        <table>
-            <caption>Votes held this month</caption>
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Title</th>
-                    <th>Result</th>
-                    <th>(Link)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="votes"></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="4">Total held: <b id="num-votes">0</b></td>
-                    <td><button title="Manually enter another vote" onclick="manualVote();">+</button></td>
-                </tr>
-            </tfoot>
-        </table>
-    </details>
-    <details open>
-        <summary>Discussions</summary>
-        <table>
-            <caption>List of discussions active this month</caption>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>(Link)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="discussions"></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="2">Total amount: <b id="num-discussions">0</b></td>
-                    <td><button title="Enter another discussion" onclick="manualDiscussion();">+</button></td>
-                </tr>
-            </tfoot>
-        </table>
-    </details>
-    <details open>
-        <summary>Legislator Check</summary>
-        <label for="roster">Full legislator roster:</label>
-        <textarea id="roster" cols="30" rows="10"></textarea>
-        <button onclick="legCheck(document.getElementById('roster').value.split('\n'));">Check</button>
-        <i id="error-legcheck"></i>
-        <table>
-            <caption>Legislators failing the Legislator Check</caption>
-            <thead>
-                <tr>
-                    <th>Forum Username</th>
-                    <th>TSP Nation</th>
-                    <th>Reason</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="noncompliant"></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3">Total noncompliant: <b id="num-fails">0</b></td>
-                    <td><button title="Manually mark another legislator to fail" onclick="manualFailingLegislator();">+</button></td>
-                </tr>
-            </tfoot>
-        </table>
-        <div>
-            <label for="intro-arrivals">Introduction text:</label><br>
-            <textarea id="intro-arrivals" cols="30" rows="10" placeholder="e.g. Welcome (back) to our new legislators this month!"></textarea>
-        </div>
-        <table>
-            <caption>Newly admitted legislators</caption>
-            <thead>
-                <tr>
-                    <th>Forum Username</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="arrivals"></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="1">Total arrivals: <b id="num-arrivals">0</b></td>
-                    <td><button title="Enter another legislator" onclick="manualArrivingLegislator();">+</button></td>
-                </tr>
-            </tfoot>
-        </table>
-    </details>
-    <button onclick="generate();">*** Magic ***</button>
-    <textarea id="soa-out" cols="30" rows="10"></textarea>
+    </footer>
+
+    <!-- Custom page content -->
+    <main>
+
+        <!-- Summary of the data provided by the user in the input section -->
+        <article id="soa-summary">
+            <div class="title">
+                <h3>State of the Assembly</h3>
+                <i id="soa-month">[month] [year]</i>
+            </div>
+            <div id="parts" class="two-rows">
+                <span onclick="edit('V');">Votes held:</span>
+                <var id="smry-votes">0</var>
+                <span onclick="edit('D');">Discussions held:</span>
+                <var id="smry-discussions">0</var>
+                <span onclick="edit('L');">Legislators leaving:</span>
+                <var id="smry-fails">0</var>
+                <span onclick="edit('A');">Legislators arriving:</span>
+                <var id="smry-arrivals">0</var>
+            </div>
+            <div class="orange-bar two-rows">
+                <span>
+                    <button class="action-btn" onclick="generate();">✔</button>
+                    Generate forum BBCode:
+                </span>
+                <textarea id="soa-out"></textarea>
+            </div>
+        </article>
+
+        <!-- Main input section, subdivided into its different details -->
+        <section id="input" class="orange-bar">
+            <details id="in-votes">
+                <summary>Votes</summary>
+                <div class="two-rows">
+                    <label for="intro-votes">Summary text:</label>
+                    <textarea id="intro-votes"></textarea>
+                </div>
+                <div class="two-rows">
+                    <span>
+                        <label for="add-votes">Spreadsheet excerpt:</label>
+                        <em id="error-votes" hidden>No error</em>
+                    </span>
+                    <textarea id="add-votes" placeholder="Open the legislative history sheet, mark all of this month's votes, copy them, and paste here"></textarea>
+                </div>
+                <table>
+                    <caption>Final table &ndash; Votes held this month</caption>
+                    <thead>
+                        <tr>
+                            <th id="col-code">Code</th>
+                            <th>Title</th>
+                            <th id="col-result">Result</th>
+                            <th id="col-link">(Link)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="votes"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">Total held: <var id="num-votes">0</var></td>
+                            <td>
+                                <button class="action-btn" onclick="manualVote();" title="Manually enter another vote">+</button>
+                                <button class="action-btn" onclick="loadVotes();" title="Load in from spreadsheet excerpt">⭳</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </details>
+            <details id="in-discussions">
+                <summary>Discussions</summary>
+                <table>
+                    <caption>Final table &ndash; List of discussions active this month</caption>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>(Link)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="discussions"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Total amount: <var id="num-discussions">0</var></td>
+                            <td><button class="action-btn" title="Enter another discussion" onclick="manualDiscussion();">+</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </details>
+            <details id="in-legcheck">
+                <summary>Legislator Check</summary>
+                <div class="two-rows">
+                    <span>
+                        <label for="roster">Full legislator roster:</label>
+                        <em id="error-legcheck" hidden>No error</em>
+                    </span>
+                    <textarea id="roster" placeholder="Open the roster for this month, select everything (CTRL+A), copy it, and paste here"></textarea>
+                </div>
+                <div class="two-rows">
+                    <label for="intro-arrivals">Welcome text for new legislators:</label>
+                    <textarea id="intro-arrivals" placeholder="e.g. Welcome (back) to our new legislators this month!"></textarea>
+                </div>
+                <table>
+                    <caption>Final table &ndash; Legislators failing the Legislator Check</caption>
+                    <thead>
+                        <tr>
+                            <th>Forum Username</th>
+                            <th>TSP Nation</th>
+                            <th>Reason</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noncompliant"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Total noncompliant: <var id="num-fails">0</var></td>
+                            <td>
+                                <button class="action-btn" onclick="manualFailingLegislator();" title="Manually mark another legislator to fail">+</button>
+                                <button class="action-btn" onclick="legCheck(document.getElementById('roster').value.split('\n'));" title="Load in from roster">⭳</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <table>
+                    <caption>Final table &ndash; Newly admitted legislators</caption>
+                    <thead>
+                        <tr>
+                            <th>Forum Username</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="arrivals"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="1">Total arrivals: <var id="num-arrivals">0</var></td>
+                            <td><button class="action-btn" title="Enter another legislator" onclick="manualArrivingLegislator();">+</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </details>
+        </section>
+    </main>
 </body>
 </html>

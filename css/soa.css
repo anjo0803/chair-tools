@@ -1,0 +1,24 @@
+#soa-summary::before {
+    content: 'Summary';
+}
+
+#parts {
+    grid-template-columns: repeat(4, 1fr);
+}
+#parts :nth-child(odd)::after {
+    content: '✎';
+    margin-left: 10px;
+}
+
+
+/*
+ * Adjusting the width of table cells
+ */
+
+#col-code,
+#col-result {
+    width: 10vw;
+}
+#col-link {
+    width: 20vw;
+}

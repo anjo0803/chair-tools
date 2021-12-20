@@ -9,6 +9,18 @@ const REPORT_DETAILS = {
     legsArriving: []
 }
 
+id('soa-month').innerText = new Date(new Date() - 1000 * 60 * 60 * 24 * 7).toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric'
+});
+
+function edit(part) {
+    for(let component of document.getElementById('input').children) component.open = false;
+    if(part == 'V') id('in-votes').open = true;
+    else if(part == 'D') id('in-discussions').open = true;
+    else if(part == 'A' || part == 'L') id('in-legcheck').open = true;
+}
+
 function generate() {
     let header = '[align=center][size=x-large][b]State of the Assembly November 2021[/b][/size][/align]';    // Ask for date input
     let votesHeader = '[table=100][tr][td][size=large][b]Votes[/b][/size][/td][/tr][/table]';
@@ -115,6 +127,7 @@ function parseToVote(row) {
  */
 function updateVoteCount() {
     id('num-votes').innerText = REPORT_DETAILS.votes.length;
+    id('smry-votes').innerText = REPORT_DETAILS.votes.length;
 }
 
 /**
@@ -171,6 +184,7 @@ function parseToDiscussion(row) {
  */
 function updateDiscussionCount() {
     id('num-discussions').innerText = REPORT_DETAILS.discussions.length;
+    id('smry-discussions').innerText = REPORT_DETAILS.discussions.length;
 }
 
 /**
@@ -294,6 +308,7 @@ function parseToReport(row) {
  */
 function updateFailingCount() {
     id('num-fails').innerText = REPORT_DETAILS.legsDeparting.length;
+    id('smry-fails').innerText = REPORT_DETAILS.legsDeparting.length;
 }
 
 /**
@@ -342,6 +357,7 @@ function parseToArrival(row) {
  */
  function updateArrivingCount() {
     id('num-arrivals').innerText = REPORT_DETAILS.legsArriving.length;
+    id('smry-arrivals').innerText = REPORT_DETAILS.legsArriving.length;
 }
 
 /**
@@ -369,6 +385,7 @@ function parseToArrival(row) {
     let removeBtn = document.createElement('button');   // Button to remove a noncompliance report completely
     removeBtn.innerText = '✕';
     removeBtn.title = 'Remove';
+    removeBtn.className = 'action-btn';
     removeBtn.onclick = (ev) => temp == 'V' ? removeVote(ev.target.parentElement.parentElement) : temp == 'D' ? removeDiscussion(ev.target.parentElement.parentElement) : temp == 'A' ? removeArrivingLegislator(ev.target.parentElement.parentElement) : removeFailingLegislator(ev.target.parentElement.parentElement);
 
     actionCell.appendChild(removeBtn);
