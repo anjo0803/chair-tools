@@ -1,6 +1,6 @@
 // Communicating with the NationStates API
 
-const BASE = 'https://www.nationstates.net/cgi-bin/api.cgi?';
+const BASE = 'https://www.nationstates.net/cgi-bin/api.cgi?script_name=TSP_Assembly_Autoformatter_by_Tepertopia&';
 const RATELIMIT = 30000.0 / 49;
 var lastRequest = 0;
 

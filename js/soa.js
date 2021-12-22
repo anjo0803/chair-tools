@@ -207,11 +207,11 @@ async function legCheck(roster) {
     // Load in the required column indexes
     let nameIndex = getIndex('forum', roster[NUM_HEADERS]),
         nationIndex = getIndex('nation', roster[NUM_HEADERS]),
-        numVotesIndex = getIndex('votes#', roster[NUM_HEADERS]),
+        numVotesIndex = getIndex('num_votes', roster[NUM_HEADERS]),
         noteIndex = getIndex('notes', roster[NUM_HEADERS]);
 
     // Calculate how often a legislator must have voted to maintain their status
-    let votesHeld = roster[NUM_HEADERS].length - ROSTER_SCHEMA.length + 1,
+    let votesHeld = roster[NUM_HEADERS].split('\t').length - ROSTER_SCHEMA.length + 1,
         votesNeeded = votesHeld === 1 ? 0 : Math.ceil(votesHeld / 2);
 
     // Fetch a list of all nations and all regional ones to verify existence/residence
@@ -226,16 +226,18 @@ async function legCheck(roster) {
         let reason = undefined;
         let nationLookup = cols[nationIndex].toLowerCase().replace(/ /gm, '_');
 
+        let vRequired = true;
         if(cols[noteIndex].toLocaleLowerCase().includes('new')) {
             let leg = {forum: cols[nameIndex]};
             arrivalsTable.appendChild(createTableRow(leg, 'A'));
             arrivals.push(leg);
+            vRequired = false;
         }
 
         // If a compliance criterium is failed, register the reason, otherwise skip this legislator
         if(cols[noteIndex].toLowerCase().includes('resigned')) reason = 'Resigned';
         else if(!residents.includes(nationLookup)) reason = nationsList.includes(nationLookup) ? 'Nation moved out' : 'Nation CTEd';
-        else if(parseInt(cols[numVotesIndex]) < votesNeeded) reason = 'Failed Voting Requirement';
+        else if(vRequired && parseInt(cols[numVotesIndex]) < votesNeeded) reason = 'Failed Voting Requirement';
         else continue;
 
         // Create the noncompliance report and save it

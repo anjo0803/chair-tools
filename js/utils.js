@@ -9,7 +9,7 @@ const ROSTER_SCHEMA = [ // Column for...
     "join-date",    // Legislator since
     "notes",        // Chair's discretion notes
     "ballots",      // Ballots cast [this can be multiple columns!]
-    "votes#",       // Number of ballots cast
+    "num_votes",    // Number of ballots cast
     "status",       // Compliance status
     "reason"        // Compliance status reason
 ];
@@ -45,11 +45,11 @@ function id(elementID) {
 /**
  * 
  * @param {string} col 
- * @param {string[]} rowEx 
+ * @param {string} rowEx 
  * @returns 
  */
 function getIndex(col, rowEx) {
-    return COLUMNS[col] < 0 ? rowEx.length - COLUMNS[col] : COLUMNS[col];
+    return COLUMNS[col] < 0 ? rowEx.split('\t').length + COLUMNS[col] : COLUMNS[col];
 }
 
 /**
