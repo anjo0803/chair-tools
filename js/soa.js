@@ -22,12 +22,13 @@ function edit(part) {
 }
 
 function generate() {
-    let header = '[align=center][size=x-large][b]State of the Assembly November 2021[/b][/size][/align]';    // Ask for date input
-    let votesHeader = '[table=100][tr][td][size=large][b]Votes[/b][/size][/td][/tr][/table]';
-    let discussionsHeader = '[table=100][tr][td][size=large][b]Discussions[/b][/size][/td][/tr][/table]';
-    let legCheckHeader = '[table=100][tr][td][size=large][b]Legislator Check[/b][/size][/td][/tr][/table]';
-    let legCheckIntro = 'According to the [url=https://tspforums.xyz/thread-5792.html]Legislator Committee Act[/url], in order to keep their legislator status, legislators must have voted in at least half of all votes in each month (given that there were at least two votes in that month), as well as maintain a nation in [region]the South Pacific[/region]. Since ' + (REPORT_DETAILS.votes.length < 2 ? (REPORT_DETAILS.votes.length == 0 ? 'no votes' : 'only one vote') + ' finished this month, legislators needed only to maintain a nation in the South Pacific to keep their status.' : REPORT_DETAILS.votes.length + ' votes finished this month, legislators needed to have voted in at least ' + Math.ceil(REPORT_DETAILS.votes.length / 2) + ' of them to keep their status.') + '.\n\nThe list of legislators whom the Chair recommends the Legislator Committee to revoke the legislator statuses of is in the table below. If your legislator status has been revoked, you can always [url=https://tspforums.xyz/thread-9655.html]reapply.[/url] You can also find the legislator roster for this month attached at the bottom of this post.';
-    let arrivalsHeader = '[table=100][tr][td][size=large][b]New Legislators[/b][/size][/td][/tr][/table]';
+    let header = `[align=center][size=x-large][b]State of the Assembly #month[/b][/size][/align]`
+        .replace(/#month/gm, id('soa-month').innerText);
+    let votesHeader = `[table=100][tr][td][size=large][b]Votes[/b][/size][/td][/tr][/table]`;
+    let discussionsHeader = `[table=100][tr][td][size=large][b]Discussions[/b][/size][/td][/tr][/table]`;
+    let legCheckHeader = `[table=100][tr][td][size=large][b]Legislator Check[/b][/size][/td][/tr][/table]`;
+    let legCheckIntro = `According to the [url=https://tspforums.xyz/thread-5792.html]Legislator Committee Act[/url], in order to keep their legislator status, legislators must have voted in at least half of all votes in each month (given that there were at least two votes in that month), as well as maintain a nation in [region]the South Pacific[/region]. Since ${REPORT_DETAILS.votes.length < 2 ? (REPORT_DETAILS.votes.length == 0 ? 'no votes' : 'only one vote') + ' finished this month, legislators needed only to maintain a nation in the South Pacific to keep their status' : REPORT_DETAILS.votes.length + ' votes finished this month, legislators needed to have voted in at least ' + Math.ceil(REPORT_DETAILS.votes.length / 2) + ' of them to keep their status'}.\n\nThe list of legislators whom the Chair recommends the Legislator Committee to revoke the legislator statuses of is in the table below. If your legislator status has been revoked, you can always [url=https://tspforums.xyz/thread-9655.html]reapply.[/url] You can also find the legislator roster for this month attached at the bottom of this post.`;
+    let arrivalsHeader = `[table=100][tr][td][size=large][b]New Legislators[/b][/size][/td][/tr][/table]`;
 
     let tableVotes = '[table=100]';
     for(let vote of REPORT_DETAILS.votes) tableVotes += `\n[tr][td]${vote.code}[/td][td]${(vote.link != '' ? '[url=' + vote.link + ']' + vote.title + '[/url]' : vote.title)}[/td][td][color=${vote.result == 'Passed' ? '#017000]Passed' : vote.result == 'Failed' ? '#123456]Failed' : '#808080]' + vote.result}[/color][/td][/tr]`;
@@ -41,10 +42,10 @@ function generate() {
     for(let noncomplier of REPORT_DETAILS.legsDeparting) tableDeparting += `\n[tr][td]@${/[ \d]/g.test(noncomplier.forum) ? '\'' + noncomplier.forum + '\'' : noncomplier.forum}[/td][td][url=${noncomplier.nation.toLowerCase().replace(/ /g, '_') + ']' + noncomplier.nation}[/url][/td][td]${noncomplier.reason}[/td][/tr]`;
     tableDeparting += '\n[/table]';
 
-    let listArriving = '###';
+    let listArriving = ' ';
     for(let arrival of REPORT_DETAILS.legsArriving) listArriving += ` | @${arrival.forum.includes(' ') ? '\'' + arrival.forum + '\'' : arrival.forum}`;
 
-    let final = `${header}\n\n${votesHeader}\n\n${id('intro-votes').value}\n\n[spoiler=List of votes]\n${tableVotes}\n[/spoiler]\n\n${discussionsHeader}\n\n[spoiler=List of discussions active this past month]\n${listDiscussions}\n[/spoiler]\n\n${legCheckHeader}\n\n${legCheckIntro}\n\n${tableDeparting}\n\n${arrivalsHeader}\n\n${id('intro-arrivals').value}\n\n${listArriving.replace('### | ', '')}`;
+    let final = `${header}\n\n${votesHeader}\n\n${id('intro-votes').value}\n\n[spoiler=List of votes]\n${tableVotes}\n[/spoiler]\n\n${discussionsHeader}\n\n[spoiler=List of discussions active this past month]\n${listDiscussions}\n[/spoiler]\n\n${legCheckHeader}\n\n${legCheckIntro}\n\n${tableDeparting}\n\n${arrivalsHeader}\n\n${id('intro-arrivals').value}\n\n${listArriving.replace('  | ', '')}`;
 
     id('soa-out').value = final;
 }
