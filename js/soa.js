@@ -30,7 +30,7 @@ function generate() {
     let legCheckIntro = `According to the [url=https://tspforums.xyz/thread-5792.html]Legislator Committee Act[/url], in order to keep their legislator status, legislators must have voted in at least half of all votes in each month (given that there were at least two votes in that month), as well as maintain a nation in [region]the South Pacific[/region]. Since ${REPORT_DETAILS.votes.length < 2 ? (REPORT_DETAILS.votes.length == 0 ? 'no votes' : 'only one vote') + ' finished this month, legislators needed only to maintain a nation in the South Pacific to keep their status' : REPORT_DETAILS.votes.length + ' votes finished this month, legislators needed to have voted in at least ' + Math.ceil(REPORT_DETAILS.votes.length / 2) + ' of them to keep their status'}.\n\nThe list of legislators whom the Chair recommends the Legislator Committee to revoke the legislator statuses of is in the table below. If your legislator status has been revoked, you can always [url=https://tspforums.xyz/thread-9655.html]reapply.[/url] You can also find the legislator roster for this month attached at the bottom of this post.`;
     let arrivalsHeader = `[table=100][tr][td][size=large][b]New Legislators[/b][/size][/td][/tr][/table]`;
 
-    let tableVotes = '[table=100]';
+    let tableVotes = '[table=100]\n[tr][td][b]Code[/b][/td][td][b]Title[/b][/td][td][b]Result[/b][/td][/tr]';
     for(let vote of REPORT_DETAILS.votes) tableVotes += `\n[tr][td]${vote.code}[/td][td]${(vote.link != '' ? '[url=' + vote.link + ']' + vote.title + '[/url]' : vote.title)}[/td][td][color=${vote.result == 'Passed' ? '#017000]Passed' : vote.result == 'Failed' ? '#123456]Failed' : '#808080]' + vote.result}[/color][/td][/tr]`;
     tableVotes += '\n[/table]';
 
@@ -39,7 +39,7 @@ function generate() {
     listDiscussions += '\n[/list]';
 
     let tableDeparting = '[table=100]\n[tr][td][b]Forum Username[/b][/td][td][b]Nation in TSP[/b][/td][td][b]Reason[/b][/td][/tr]';
-    for(let noncomplier of REPORT_DETAILS.legsDeparting) tableDeparting += `\n[tr][td]@${/[ \d]/g.test(noncomplier.forum) ? '\'' + noncomplier.forum + '\'' : noncomplier.forum}[/td][td][url=${noncomplier.nation.toLowerCase().replace(/ /g, '_') + ']' + noncomplier.nation}[/url][/td][td]${noncomplier.reason}[/td][/tr]`;
+    for(let noncomplier of REPORT_DETAILS.legsDeparting) tableDeparting += `\n[tr][td]@${/[ \d]/g.test(noncomplier.forum) ? '\'' + noncomplier.forum + '\'' : noncomplier.forum}[/td][td][nation]${noncomplier.nation}[/nation][/td][td]${noncomplier.reason}[/td][/tr]`;
     tableDeparting += '\n[/table]';
 
     let listArriving = ' ';
@@ -175,8 +175,8 @@ function manualDiscussion() {
  */
 function parseToDiscussion(row) {
     return {
-        link: row.children.item(0).firstChild.value,
-        title: row.children.item(1).firstChild.value
+        title: row.children.item(0).firstChild.value,
+        link: row.children.item(1).firstChild.value
     };
 }
 
