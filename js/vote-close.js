@@ -19,6 +19,7 @@ function generate() {
     for(let ballot in tally) {
         let votes = 0;
         for(let legislator of id('v' + ballot).value.split(', ')) {
+            if(legislator.length == 0) continue;
             ballots[legislator] = ballot;
             votes++;
         }
