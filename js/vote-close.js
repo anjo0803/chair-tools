@@ -52,6 +52,10 @@ function generate() {
 
 // Paint a visual representation of the voting results.
 function createVisual(voteID, threshold, tally) {
+    
+    CTX.beginPath();
+    CTX.clearRect(0, 0, CTX.width, CTX.height);
+    CTX.closePath();
 
     // Draw the static background image.
     CTX.drawImage(document.getElementById('bg'), 0, 0);
