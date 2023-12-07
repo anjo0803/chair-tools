@@ -93,7 +93,7 @@ function removeVote(row) {
  */
 function manualVote() {
     let blankVote = {code: '', title: '', result: 'Failed', link: ''};
-    id('votes').appendChild(createTableRow(blankVote), 'V');
+    id('votes').appendChild(createTableRow(blankVote, 'V'));
     REPORT_DETAILS.votes.push(blankVote);
     updateVoteCount();
 }
