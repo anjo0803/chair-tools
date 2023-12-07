@@ -64,7 +64,7 @@ function loadVotes() {
             result: data[3],
             link: ''
         };
-        id('votes').appendChild(createTableRow(vote), 'V');
+        id('votes').appendChild(createTableRow(vote, 'V'));
         REPORT_DETAILS.votes.push(vote);
         updateVoteCount();
     }
